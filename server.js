@@ -1,7 +1,9 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 
+var Axios = require('axios')
 var test = require('./components/test')
+var NonCommercial = require('./components/noncommercial')
 
 var app = express()
 app.use(bodyParser.json())
@@ -42,6 +44,11 @@ function countdown(res, count) {
     res.end()
 }
 
+app.get('/report/:module/:tab/:seq_start/:seq_end', (req, res, next)=> {
+  NonCommercial.createReport(result => {
+    res.json(result)
+  })
+})
 
 app.post('/generate-report', (request, response) => {
     test.foo()
@@ -57,4 +64,3 @@ var server = app.listen(8081, () => {
     var port = server.address().port
     console.log("Server is listening at http://%s:%s", host, port)
 })
-
